@@ -27,13 +27,13 @@ export default function Header({ brands }: { brands: string[] }) {
         <div className="flex items-center gap-3 min-w-[180px]">
           <Image
             src={Logo}
-            alt="Aampere"
+            alt="EV Explorer"
             width={40}
             height={40}
             className="rounded-lg"
             priority
           />
-          <span className="text-lg font-semibold tracking-tight">Aampere Coding Challenge</span>
+          <span className="text-lg font-semibold tracking-tight">EV Dashboard</span>
         </div>
 
         {/* Right: big brand combobox */}
