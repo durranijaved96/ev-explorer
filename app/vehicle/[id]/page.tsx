@@ -6,9 +6,15 @@ export async function generateStaticParams() {
   return all.map(v => ({ id: v.id }));
 }
 
-export default async function VehiclePage({ params }: { params: { id: string } }) {
+export default async function VehiclePage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> 
+}) {
+  const { id } = await params;
   const all = await loadAllVehicles();
-  const v = all.find(x => x.id === params.id);
+  const v = all.find(x => x.id === id);
+  
   if (!v) return <div className="p-6">Vehicle not found.</div>;
 
   return (
