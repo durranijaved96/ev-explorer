@@ -33,7 +33,7 @@ export default function Header({ brands }: { brands: string[] }) {
             className="rounded-lg"
             priority
           />
-          <span className="text-lg font-semibold tracking-tight">EV Dashboard</span>
+          <span className="text-lg font-semibold tracking-tight">EV Explorer Dashboard</span>
         </div>
 
         {/* Right: big brand combobox */}
