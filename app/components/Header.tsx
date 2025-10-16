@@ -2,7 +2,7 @@
 "use client";
 
 import Image from "next/image";
-import Logo from "@/public/Aampere-GmbH.jpeg";
+import Logo from "@/public/il_1080xN.6381393357_558m.webp";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import BrandCombobox from "./BrandCombobox";
 
