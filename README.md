@@ -40,4 +40,4 @@ This project fulfills the requirements to demonstrate how to **build and optimiz
   - Full image gallery
   - Brand, model, specs, drivetrain, and range
   - Price, accident info, and status chips
-- Accessible keyboard navigation (ESC closes modal).
+- Accessible keyboard navigation (ESC closes modal)
