@@ -66,18 +66,20 @@ export default function BrandCombobox({
     setOpen(false);
   };
 
-  // width presets
+  // Responsive width classes based on size prop
   const widthClass =
-    size === "lg" ? "w-full sm:w-[28rem] md:w-[36rem] lg:w-[44rem]" : "w-64";
+    size === "lg" 
+      ? "w-full sm:w-[28rem] md:w-[36rem] lg:w-[44rem]" 
+      : "w-full sm:w-64";
 
   return (
     <div
       ref={rootRef}
-      className="relative min-w-0"
+      className="relative min-w-0 w-full"
       onMouseEnter={cancelClose}
       onMouseLeave={scheduleClose}
     >
-      <div className="relative">
+      <div className="relative w-full">
         <input
           ref={inputRef}
           value={text}
@@ -130,10 +132,10 @@ export default function BrandCombobox({
               apply(undefined);
             }}
             className="
-      absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1
-      hover:bg-neutral-200/60 dark:hover:bg-neutral-700/60
-      cursor-pointer transition-all
-    "
+              absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1
+              hover:bg-neutral-200/60 dark:hover:bg-neutral-700/60
+              cursor-pointer transition-all
+            "
             aria-label="Clear brand"
           >
             <XMarkIcon className="h-5 w-5" />
@@ -143,7 +145,7 @@ export default function BrandCombobox({
 
       {open && (
         <div
-          className="absolute z-50 mt-2 w-72 rounded-xl shadow-2xl p-2
+          className="absolute z-50 mt-2 w-full sm:w-72 rounded-xl shadow-2xl p-2
                border border-neutral-300 dark:border-neutral-700
                bg-white dark:bg-neutral-900
                max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-300 dark:scrollbar-thumb-neutral-700
