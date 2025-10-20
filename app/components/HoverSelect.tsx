@@ -1,7 +1,6 @@
-// app/components/HoverSelect.tsx
 "use client";
-
 import { useEffect, useRef, useState } from "react";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 
 type Option = { value: string; label: string };
 
@@ -10,8 +9,8 @@ export default function HoverSelect({
   value,
   options,
   onChange,
-  className = "w-56",          // default width; override from parent with w-full
-  menuMatchTrigger = false,     // makes menu width match trigger
+  className,
+  menuMatchTrigger = false,
 }: {
   label: string;
   value: string;
@@ -20,111 +19,100 @@ export default function HoverSelect({
   className?: string;
   menuMatchTrigger?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement | null>(null);
   const btnRef = useRef<HTMLButtonElement | null>(null);
-  const [menuW, setMenuW] = useState<number | undefined>(undefined);
+  const [open, setOpen] = useState(false);
+  const [menuW, setMenuW] = useState<number>();
+  const selected = options.find(o => o.value === value)?.label ?? "Any";
 
-  // Keep menu width equal to trigger (optional)
+  // Keep menu width = trigger width
   useEffect(() => {
-    if (!menuMatchTrigger) return;
-    const update = () => {
-      if (btnRef.current) setMenuW(btnRef.current.offsetWidth);
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    if (!menuMatchTrigger || !btnRef.current) return;
+    const sync = () => setMenuW(btnRef.current!.offsetWidth);
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(btnRef.current);
+    return () => ro.disconnect();
   }, [menuMatchTrigger]);
 
-  // Click outside / ESC to close
+  // Close on outside click
   useEffect(() => {
     if (!open) return;
-
-    const handleDoc = (e: MouseEvent) => {
-      const t = e.target as Node;
-      if (!rootRef.current?.contains(t)) setOpen(false);
+    const onDoc = (e: MouseEvent) => {
+      if (!btnRef.current) return;
+      if (!btnRef.current.closest(".hs-root")) return;
+      const root = btnRef.current.closest(".hs-root")!;
+      if (!root.contains(e.target as Node)) setOpen(false);
     };
-    const onEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-
-    document.addEventListener("mousedown", handleDoc);
-    document.addEventListener("keydown", onEsc);
-    return () => {
-      document.removeEventListener("mousedown", handleDoc);
-      document.removeEventListener("keydown", onEsc);
-    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
   }, [open]);
 
-  // Toggle on click (desktop + mobile). Also support keyboard.
-  const toggle = () => setOpen((s) => !s);
-
   return (
-    <div ref={rootRef} className={`relative ${className}`}>
+    <div className="relative hs-root">
       <button
         ref={btnRef}
         type="button"
         aria-haspopup="listbox"
         aria-expanded={open}
-        onClick={toggle}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            toggle();
-          }
-          if (e.key === "ArrowDown") setOpen(true);
+        onClick={() => setOpen(v => !v)}
+        onBlur={(e) => {
+          // close when focus leaves the whole widget
+          if (!e.currentTarget.closest(".hs-root")?.contains(e.relatedTarget as Node)) setOpen(false);
         }}
-        className="
-          h-11 w-full rounded-xl border
-          bg-white/70 dark:bg-neutral-900/70 backdrop-blur
-          border-neutral-300/70 dark:border-neutral-700/70
-          px-3 text-left outline-none
-          focus:ring-2 focus:ring-blue-500/60
-        "
+        className={[
+          "w-full inline-flex items-center gap-2",
+          "h-10 px-3 rounded-xl",
+          "border border-neutral-300/70 dark:border-neutral-700/70",
+          "bg-white/70 dark:bg-neutral-900/70 backdrop-blur",
+          "text-sm hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70",
+          "focus:outline-none focus:ring-2 focus:ring-blue-500/50",
+          className || "",
+        ].join(" ")}
       >
-        {/* Smaller placeholder/label, medium value text */}
-        <div className="text-[11px] leading-4 opacity-70">{label}</div>
-        <div className="text-sm font-medium">
-          {options.find((o) => o.value === value)?.label ?? "Any"}
-        </div>
+        <span className="truncate opacity-70">{label}</span>
+        <span className="truncate font-medium flex-1 text-right">{selected}</span>
+        <ChevronDownIcon
+          className={[
+            "h-4 w-4 shrink-0 transition-transform duration-150",
+            open ? "rotate-180" : "rotate-0",
+          ].join(" ")}
+          aria-hidden="true"
+        />
       </button>
 
       {open && (
         <div
           role="listbox"
-          aria-label={label}
-          className="
-            absolute z-50 mt-2 rounded-xl shadow-2xl p-2
-            border border-neutral-300 dark:border-neutral-700
-            bg-white dark:bg-neutral-900
-            max-h-80 overflow-y-auto
-          "
+          tabIndex={-1}
+          className="absolute z-50 mt-2 rounded-xl shadow-2xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 overflow-hidden"
           style={menuMatchTrigger && menuW ? { width: menuW } : undefined}
-          // prevent menu from closing on press before click fires
-          onMouseDown={(e) => e.preventDefault()}
         >
-          {options.map((o) => {
-            const selected = o.value === value;
-            return (
-              <div
-                key={o.value}
-                role="option"
-                aria-selected={selected}
-                onClick={() => {
-                  onChange(o.value);
-                  setOpen(false);
-                }}
-                className={`
-                  px-3 py-2 text-sm cursor-pointer rounded-lg
-                  ${selected
-                    ? "bg-neutral-100/90 dark:bg-neutral-800/90"
-                    : "hover:bg-neutral-100/80 dark:hover:bg-neutral-800/80"}
-                `}
-              >
-                {o.label}
-              </div>
-            );
-          })}
+          <ul className="max-h-72 overflow-auto py-1">
+            {options.map((o) => {
+              const active = o.value === value;
+              return (
+                <li key={o.value}>
+                  <button
+                    role="option"
+                    aria-selected={active}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => {
+                      onChange(o.value);
+                      setOpen(false);
+                    }}
+                    className={[
+                      "w-full text-left px-3 py-2 text-sm",
+                      active
+                        ? "bg-neutral-100/90 dark:bg-neutral-800/90 font-medium"
+                        : "hover:bg-neutral-100/70 dark:hover:bg-neutral-800/70",
+                    ].join(" ")}
+                  >
+                    {o.label}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       )}
     </div>
