@@ -1,20 +1,38 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Use standalone output to reduce deployment size
+  output: 'standalone',
+  
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "ev-database.org", pathname: "/img/**" },
     ],
+    // Optimize images
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60,
   },
-  // Temporarily disable ESLint during builds to avoid the circular reference error
+  
+  // Optimize compiler output
+  compiler: {
+    // Remove console logs in production
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
+  // Disable source maps in production to reduce size
+  productionBrowserSourceMaps: false,
+  
+  // Optimize bundle
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+  },
+  
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Also disable TypeScript checks during build if needed
+  
   typescript: {
-    // ⚠️ Dangerously allow production builds to successfully complete even if
-    // your project has type errors. Use cautiously!
-    ignoreBuildErrors: false, // Set to true only if type errors persist
+    ignoreBuildErrors: false,
   },
 };
 

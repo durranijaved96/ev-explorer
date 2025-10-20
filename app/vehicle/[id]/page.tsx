@@ -1,10 +1,21 @@
 import { loadAllVehicles } from "@/lib/getVehicles";
 import Gallery from "@/app/components/Gallery";
 
+// Use ISR instead of full SSG - pages regenerate every hour
+export const revalidate = 3600;
+
+// Only generate the first 10 most popular vehicles at build time
+// The rest will be generated on-demand and cached
 export async function generateStaticParams() {
   const all = await loadAllVehicles();
-  return all.map(v => ({ id: v.id }));
+  
+  // Only pre-render first 10 vehicles to reduce build time and size
+  // Adjust this number based on your most popular vehicles
+  return all.slice(0, 10).map(v => ({ id: v.id }));
 }
+
+// Enable dynamic params so non-pre-rendered pages work
+export const dynamicParams = true;
 
 export default async function VehiclePage({ 
   params 
