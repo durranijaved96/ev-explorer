@@ -24,7 +24,11 @@ export default function Header({ brands }: { brands: string[] }) {
     <header className="sticky top-0 z-40 border-b border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-4">
         {/* Left: Logo + wordmark */}
-        <div className="flex items-center gap-3 min-w-[180px]">
+        <div
+          id="tour-logo"                 //  target for the first step
+          data-tour="logo"
+          className="flex items-center gap-3 min-w-[180px]"
+        >
           <Image
             src={Logo}
             alt="EV Explorer"
@@ -33,16 +37,22 @@ export default function Header({ brands }: { brands: string[] }) {
             className="rounded-lg"
             priority
           />
-          <span className="text-lg font-semibold tracking-tight">EV Explorer Dashboard</span>
+          <span className="text-lg font-semibold tracking-tight">
+            EV Explorer Dashboard
+          </span>
         </div>
 
         {/* Right: big brand combobox */}
-        <div className="flex-1 flex justify-end">
+        <div
+          id="tour-brand"                //  target for the brand step
+          data-tour="brand-filter"
+          className="flex-1 flex justify-end"
+        >
           <BrandCombobox
             brands={brands}
             value={currentBrand}
             onChange={setBrand}
-            size="lg" 
+            size="lg"
           />
         </div>
       </div>

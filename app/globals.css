@@ -5,13 +5,6 @@
   --foreground: #171717;
 }
 
-:root {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -24,3 +17,109 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* ===========================================================
+   EVX Tour — Modern Circular Icon Buttons (No Border)
+   =========================================================== */
+   .driver-popover.evx-pop .driver-popover-footer {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 14px 20px !important;
+    background: #f8f9fa !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+  }
+  
+  /* Circle buttons — clean, borderless, translucent hover */
+  .driver-popover.evx-pop .driver-btn,
+  .driver-popover.evx-pop button.driver-btn,
+  .driver-popover.evx-pop .driver-prev-btn,
+  .driver-popover.evx-pop .driver-next-btn {
+    width: 40px !important;
+    height: 40px !important;
+   
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 14px; /* ✅ perfect circle */
+    border: none !important;
+    background: transparent !important;
+    color: #111 !important;
+    cursor: pointer !important;
+    transition: background 0.25s ease, transform 0.2s ease !important;
+  }
+  
+  .driver-popover.evx-pop .driver-btn:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    transform: translateY(-1px);
+  }
+  @media (prefers-color-scheme: dark) {
+    .driver-popover.evx-pop .driver-btn:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+  }
+  
+  /* SVG icon sizing */
+  .driver-popover.evx-pop .driver-btn svg {
+    width: 24px !important;
+    height: 24px !important;
+    stroke: currentColor !important;
+  }
+  
+  /* Disabled */
+  .driver-popover.evx-pop .driver-btn:disabled {
+    opacity: 0.3 !important;
+    cursor: not-allowed !important;
+  }
+  
+  /* Done button — pill CTA (teal) */
+  .driver-popover.evx-pop .driver-done-btn {
+    min-width: 80px !important;
+ 
+    border-radius: '20px !important';
+    background: #00a5aa !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    border: none !important;
+    transition: background 0.25s ease, transform 0.2s ease;
+  }
+  
+  .driver-popover.evx-pop .driver-done-btn:hover {
+    
+    transform: translateY(-1px);
+  }
+  
+  /* Popover container — clean, balanced spacing */
+  .driver-popover.evx-pop {
+    border-radius: 14px !important;
+    background: #fff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1) !important;
+    max-width: 440px !important;
+    min-height: 170px !important;
+  }
+  
+  .driver-popover.evx-pop .driver-popover-content {
+    padding: 22px 26px !important;
+    text-align: left !important;
+    line-height: 1.6 !important;
+    color: #333 !important;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .driver-popover.evx-pop {
+      background: #141414 !important;
+      border-color: rgba(255, 255, 255, 0.08) !important;
+    }
+    .driver-popover.evx-pop .driver-popover-footer {
+      background: #1b1c1e !important;
+      border-top-color: rgba(255, 255, 255, 0.08) !important;
+    }
+    .driver-popover.evx-pop .driver-btn {
+      color: #f1f1f1 !important;
+    }
+    .driver-popover.evx-pop .driver-btn:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+  }
+  
