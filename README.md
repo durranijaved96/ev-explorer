@@ -27,7 +27,7 @@ This project fulfills the requirements to demonstrate how to **build and optimiz
   - **Search bar**
   - **Filter by condition / drivetrain**
   - **Basic sorting** (price, range, year, brand)
-  - **Pagination** for results
+  - **Pagination** for results with vehicles data
   - **PieChart** for visuallizing the first over look of the vehicles
   - **Filters** for accidents, new and drive train
 - SSR-powered data fetching with query param persistence (`?sort=price&dir=asc&page=1`).
