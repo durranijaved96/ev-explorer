@@ -41,7 +41,7 @@ export default function StatsBar({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-0.5">
             <div className="flex items-center justify-center w-6 h-6 rounded-lg bg-blue-100 dark:bg-blue-900/30">
-              <Car className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+              <Car className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
             <span className={LABEL}>Vehicles</span>
           </div>
@@ -72,7 +72,7 @@ export default function StatsBar({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-0.5">
             <div className="flex items-center justify-center w-6 h-6 rounded-lg bg-green-100 dark:bg-green-900/30">
-              <Gauge className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
+              <Gauge className="w-8 h-8 text-green-600 dark:text-green-400" />
             </div>
             <span className={LABEL}>Drivetrain</span>
           </div>
@@ -109,7 +109,7 @@ export default function StatsBar({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-0.5">
             <div className="flex items-center justify-center w-6 h-6 rounded-lg bg-purple-100 dark:bg-purple-900/30">
-              <Battery className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+              <Battery className="w-8 h-8 text-purple-600 dark:text-purple-400" />
             </div>
             <span className={LABEL}>Range (km)</span>
           </div>
@@ -126,7 +126,7 @@ export default function StatsBar({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-0.5">
             <div className="flex items-center justify-center w-6 h-6 rounded-lg bg-yellow-100 dark:bg-yellow-900/30">
-              <Zap className="w-3.5 h-3.5 text-yellow-600 dark:text-yellow-400" />
+              <Zap className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
             </div>
             <span className={LABEL}>DC fast-charge</span>
           </div>
