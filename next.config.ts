@@ -27,9 +27,7 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
   
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // Note: `eslint` build option removed — Next.js 16+ handles linting differently.
   
   typescript: {
     ignoreBuildErrors: false,
