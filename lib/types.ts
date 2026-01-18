@@ -16,6 +16,9 @@ export type Vehicle = {
   seats?: number;
   drivetrain?: string;
   location?: string;
+  coords?: { lat: number; lng: number };
+  lease_monthly?: number;
+  subscription_monthly?: number;
   autopilot?: boolean;
   kilometer_count?: number;
   accidents?: boolean;
