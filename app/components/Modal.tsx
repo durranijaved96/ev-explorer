@@ -32,22 +32,23 @@ export default function Modal({
       <button
         aria-label="Close overlay"
         onClick={close}
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-lg"
       />
 
       {/* container: full-screen on mobile, card on ≥sm */}
-      <div className="absolute inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div className="absolute inset-0 flex items-center justify-center p-4">
   <div
     className="
       relative
       w-full sm:w-auto
       h-[100svh] sm:h-auto
-      sm:max-h-[90vh] sm:max-w-5xl
+      sm:max-h-[94vh]
       bg-white dark:bg-neutral-900 shadow-2xl
-      rounded-t-3xl sm:rounded-2xl
+      rounded-2xl
       overflow-y-auto
       transition-all duration-300
     "
+    style={{ maxWidth: '96vw' }}
   >
 
           <button
