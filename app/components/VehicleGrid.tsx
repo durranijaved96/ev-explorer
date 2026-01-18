@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import type { Vehicle } from "@/lib/types";
 import Modal from "@/app/components/Modal";
+import FavoriteButton from "@/app/components/FavoriteButton";
+import CompareBar from "@/app/components/CompareBar";
 import {
   Battery50Icon,
   BoltIcon,
@@ -22,6 +24,7 @@ export default function VehicleGrid({ vehicles }: { vehicles: Vehicle[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [thumbPage, setThumbPage] = useState(0); // thumbnails pagination
+  const [compareIds, setCompareIds] = useState<string[]>([]);
 
   const selected = useMemo(
     () => vehicles.find((v) => v.id === openId) || null,
@@ -60,6 +63,14 @@ export default function VehicleGrid({ vehicles }: { vehicles: Vehicle[] }) {
     }
   };
 
+  const toggleCompare = (id: string) => {
+    setCompareIds((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id].slice(-3)));
+  };
+
+  const clearCompare = () => setCompareIds([]);
+
+  const selectedCompare = vehicles.filter((v) => compareIds.includes(v.id));
+
   return (
     <>
       {/* GRID – keep all cards with consistent aspect ratio */}
@@ -70,45 +81,65 @@ export default function VehicleGrid({ vehicles }: { vehicles: Vehicle[] }) {
               ? v.image
               : "/images/placeholder.jpg";
           return (
-            <button
-              key={v.id}
-              onClick={() => {
-                setOpenId(v.id);
-                setGalleryIndex(0);
-                setThumbPage(0);
-              }}
-              className="text-left card p-3 hover:shadow-md transition-shadow rounded-2xl"
-            >
-              <div className="aspect-[16/9] relative rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-800">
-                <Image
-                  src={src}
-                  alt={`${v.brand} ${v.model}`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
-                />
-              </div>
+            <div key={v.id} className="relative">
+              <button
+                onClick={() => {
+                  setOpenId(v.id);
+                  setGalleryIndex(0);
+                  setThumbPage(0);
+                }}
+                className="text-left card p-3 hover:shadow-md transition-shadow rounded-2xl w-full"
+              >
+                <div className="aspect-[16/9] relative rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+                  <Image
+                    src={src}
+                    alt={`${v.brand} ${v.model}`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+                  />
+                </div>
 
-              <div className="pt-3 flex items-baseline justify-between gap-2">
-                <div className="min-w-0">
-                  <h3 className="font-semibold truncate">
-                    {v.brand} {v.model}
-                  </h3>
-                  <div className="text-sm opacity-70 truncate">
-                    {v.year} • {v.range_km} km WLTP
+                <div className="pt-3 flex items-baseline justify-between gap-2">
+                  <div className="min-w-0">
+                    <h3 className="font-semibold truncate">
+                      {v.brand} {v.model}
+                    </h3>
+                    <div className="text-sm opacity-70 truncate">
+                      {v.year} • {v.range_km} km WLTP
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="font-semibold">€{v.price.toLocaleString()}</div>
+                    <div className="text-xs opacity-70">incl. VAT</div>
                   </div>
                 </div>
-                <div className="text-right shrink-0">
-                  <div className="font-semibold">
-                    €{v.price.toLocaleString()}
-                  </div>
-                  <div className="text-xs opacity-70">incl. VAT</div>
+              </button>
+
+              <div className="absolute top-3 right-3 flex flex-col gap-2">
+                <div onClick={(e) => e.stopPropagation()}>
+                  <FavoriteButton id={v.id} />
                 </div>
+                <label
+                  className="inline-flex items-center bg-white/90 dark:bg-neutral-800/70 rounded-md p-1 shadow"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <input
+                    type="checkbox"
+                    checked={compareIds.includes(v.id)}
+                    onChange={() => toggleCompare(v.id)}
+                    className="mr-2"
+                    aria-label={`Select ${v.brand} ${v.model} to compare`}
+                  />
+                  <span className="text-xs opacity-80">Compare</span>
+                </label>
               </div>
-            </button>
+            </div>
           );
         })}
       </div>
+
+      <CompareBar selected={selectedCompare} onClear={clearCompare} />
 
       {/* MODAL */}
       {selected && (
